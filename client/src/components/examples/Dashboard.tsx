@@ -2,7 +2,7 @@ import Dashboard from '../Dashboard';
 
 // Todo: remove mock functionality
 const mockUser = {
-  name: "João Silva Santos",
+  name: "Leonara de Oliveira Lima",
   cpf: "12345678901",
   cardNumber: "1234 5678 9012",
   balance: 25
