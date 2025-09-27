@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // Mock data for demo purposes
 const initialUser = {
-  name: "João Silva Santos",
+  name: "Leonara de Oliveira Lima",
   cpf: "12345678901",
   cardNumber: "1234 5678 9012",
   balance: 25
