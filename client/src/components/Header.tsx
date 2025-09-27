@@ -20,14 +20,17 @@ export default function Header({ isLoggedIn = false, onMenuClick, onLoginClick }
         </div>
         
         <nav className="hidden md:flex items-center gap-6">
-          <a href="#como-funciona" className="text-muted-foreground hover:text-foreground transition-colors">
+          <a href="/#como-funciona" className="text-muted-foreground hover:text-foreground transition-colors">
             Como Funciona
           </a>
-          <a href="#beneficios" className="text-muted-foreground hover:text-foreground transition-colors">
+          <a href="/beneficios" className="text-muted-foreground hover:text-foreground transition-colors">
             Benefícios
           </a>
-          <a href="#pontos" className="text-muted-foreground hover:text-foreground transition-colors">
+          <a href="/pontos" className="text-muted-foreground hover:text-foreground transition-colors">
             Pontos de Coleta
+          </a>
+          <a href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+            Demo Dashboard
           </a>
         </nav>
 

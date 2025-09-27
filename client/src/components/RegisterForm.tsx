@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { DialogTitle } from "@/components/ui/dialog";
 import { Leaf } from "lucide-react";
 import { useState } from "react";
 
@@ -77,17 +78,19 @@ export default function RegisterForm({ onRegister, onClose }: RegisterFormProps)
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader className="text-center">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <Leaf className="h-6 w-6 text-primary" />
-          <span className="font-bold text-xl">EcoPass</span>
-        </div>
-        <CardTitle>Criar Conta</CardTitle>
-        <CardDescription>
-          Junte-se ao movimento sustentável e comece a ganhar créditos
-        </CardDescription>
-      </CardHeader>
+    <>
+      <DialogTitle className="sr-only">Criar Conta EcoPass</DialogTitle>
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader className="text-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Leaf className="h-6 w-6 text-primary" />
+            <span className="font-bold text-xl">EcoPass</span>
+          </div>
+          <CardTitle>Criar Conta</CardTitle>
+          <CardDescription>
+            Junte-se ao movimento sustentável e comece a ganhar créditos
+          </CardDescription>
+        </CardHeader>
       
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -178,6 +181,7 @@ export default function RegisterForm({ onRegister, onClose }: RegisterFormProps)
           </div>
         </form>
       </CardContent>
-    </Card>
+      </Card>
+    </>
   );
 }
