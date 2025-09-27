@@ -1,9 +1,14 @@
+import { useState } from "react";
 import Header from "@/components/Header";
 import Dashboard from "@/components/Dashboard";
+import AddRecyclingModal from "@/components/AddRecyclingModal";
+import UseCreditsModal from "@/components/UseCreditsModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 // Mock data for demo purposes
-const mockUser = {
+const initialUser = {
   name: "João Silva Santos",
   cpf: "12345678901",
   cardNumber: "1234 5678 9012",
@@ -54,6 +59,58 @@ const mockTransactions = [
 ];
 
 export default function DashboardDemo() {
+  const [user, setUser] = useState(initialUser);
+  const [transactions, setTransactions] = useState(mockTransactions);
+  const [showAddRecycling, setShowAddRecycling] = useState(false);
+  const [showUseCredits, setShowUseCredits] = useState(false);
+  const { toast } = useToast();
+
+  const handleAddRecycling = (materials: any[], totalCredits: number) => {
+    // Update user balance
+    setUser(prev => ({ ...prev, balance: prev.balance + totalCredits }));
+    
+    // Add new transaction
+    const newTransaction = {
+      id: `recycling-${Date.now()}`,
+      type: 'deposit' as const,
+      amount: totalCredits,
+      description: `Reciclagem - ${materials.map(m => `${m.type} (${m.weight}kg)`).join(', ')}`,
+      date: new Date().toISOString().split('T')[0],
+      location: 'Ponto Demo'
+    };
+    
+    setTransactions(prev => [newTransaction, ...prev]);
+    setShowAddRecycling(false);
+    
+    toast({
+      title: "Reciclagem adicionada!",
+      description: `+${totalCredits} créditos foram adicionados ao seu saldo.`,
+    });
+  };
+
+  const handleUseCredits = (amount: number, type: string, details: any) => {
+    // Update user balance
+    setUser(prev => ({ ...prev, balance: prev.balance - amount }));
+    
+    // Add new transaction
+    const newTransaction = {
+      id: `transport-${Date.now()}`,
+      type: 'withdrawal' as const,
+      amount: -amount,
+      description: `${type} - ${details.line} (${details.quantity}x)`,
+      date: new Date().toISOString().split('T')[0],
+      location: details.destination
+    };
+    
+    setTransactions(prev => [newTransaction, ...prev]);
+    setShowUseCredits(false);
+    
+    toast({
+      title: "Créditos utilizados!",
+      description: `${amount} créditos foram usados para ${details.quantity} passagem(s) de ${type}.`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header 
@@ -66,11 +123,32 @@ export default function DashboardDemo() {
       </div>
 
       <Dashboard 
-        user={mockUser}
-        transactions={mockTransactions}
-        onAddRecycling={() => console.log('Add recycling')}
-        onUseCredits={() => console.log('Use credits')}
+        user={user}
+        transactions={transactions}
+        onAddRecycling={() => setShowAddRecycling(true)}
+        onUseCredits={() => setShowUseCredits(true)}
       />
+
+      {/* Add Recycling Modal */}
+      <Dialog open={showAddRecycling} onOpenChange={setShowAddRecycling}>
+        <DialogContent className="max-w-2xl">
+          <AddRecyclingModal 
+            onAddRecycling={handleAddRecycling}
+            onClose={() => setShowAddRecycling(false)}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Use Credits Modal */}
+      <Dialog open={showUseCredits} onOpenChange={setShowUseCredits}>
+        <DialogContent className="max-w-2xl">
+          <UseCreditsModal 
+            currentBalance={user.balance}
+            onUseCredits={handleUseCredits}
+            onClose={() => setShowUseCredits(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
